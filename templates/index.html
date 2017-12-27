@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load staticfiles thumbnail%}
+{% block title %}
+<title>Тест</title>
+{% endblock %}
+{% block content %}
+{% for product in Products %}
+{% if product.hide == False %}
+<div class="product clear">
+	<div class="product_item product__picture">
+	{% thumbnail product.cover "200x200" as im %}
+	<img src="{{im.url}}">
+	{% endthumbnail %}
+	</div>
+	<div class="product_item product__description">
+	<a href="#">{{product.name}}</a>
+		<p>
+	{{product.desk}}
+	</p>
+	</div>
+	<div class="product_item product__btn">
+		<span class="price">{{product.price}}</span> ₽
+		<a href="#{{product.pk}}" class="btn product_theme_simple add_to_cart" >Купить</a>
+	</div>
+</div>
+{% endif %}
+{% endfor %}
+{% endblock %}

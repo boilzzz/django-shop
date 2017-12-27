@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load staticfiles thumbnail%}
+{% block title %}
+<title>Тест</title>
+{% endblock %}
+{% block content %}
+<div class="cart-clear clear">
+	<div class="product_item product__btn">
+		<a href="#" class="btn product_theme_simple all_remove_to_cart" >Очистить корзину</a>
+	</div>
+</div>
+<div class="pruct-wrapper">
+{% for keys,products in list.items %}
+<div class="product clear" >
+	<div class="product_item product__picture">
+	{% thumbnail products.product.cover "200x200" as im %}
+	<img src="{{im.url}}">
+	{% endthumbnail %}
+	</div>
+	<div class="product_item product__description">
+	<a href="#">{{products.product.name}}</a>
+		<p>
+	{{products.product.desk}}
+	</p>
+	</div>
+	<div class="product_item product__btn">
+		<div class="quantity">Колличество {{products.kolv}} шт. </div>
+		<div class="price">Стоимость {{products.product.price}}₽.</div>
+		Итого: {{products.summa}} ₽
+		<a href="#{{forloop.counter0}}" class="btn product_theme_simple remove_to_cart" >Удалить</a>
+	</div>
+</div>
+{% endfor %}
+</div>
+{% endblock %}
