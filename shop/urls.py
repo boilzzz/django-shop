@@ -23,5 +23,9 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
 	url(r'^$', views.home, name='home'),
 	url(r'^add_to_cart/', views.add_to_cart, name='add_to_cart'),
-    url(r'^cart/',views.view_cart, name='view_cart')
+    url(r'^cart/',views.view_cart, name='view_cart'),
+    url(r'^account/sign_in/$', views.sign_in, name='sign_in'),
+    url(r'^account/logout/$', views.logout, name='logout'),
+    url(r'^account/profile/$', views.profile, name='profile'),
+    url(r'^account/login/$', views.login, name='login')
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

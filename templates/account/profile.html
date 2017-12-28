@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load staticfiles thumbnail%}
+{% block title %}
+<title>Удачная регистрация</title>
+{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<div class="user_info">
+	Здравствуй {{user.first_name}}
+	Твой логин {{user.username}}
+	Твой email {{user.email}}
+</div>
+{% else %}
+Привет, ты еще не вошел, войди! Или зарегестрируйся.
+{% endif %}
+{% endblock %}

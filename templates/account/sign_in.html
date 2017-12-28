@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load staticfiles thumbnail%}
+{% block title %}
+<title>Регистрация</title>
+{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<div class="user_info">
+	Привет {% if not user.first_name %} {{user.username}} {% else %} {{ user.first_name}}{% endif %} ты уже зарегестрирован. Хочешь <a href="{% url 'logout' %}" >выйти</a>?
+</div>
+{% else %}
+<form method="post">
+  {% csrf_token %}
+  {{ user_form.as_p }}
+  <button type="submit">Save changes</button>
+</form>
+{% endif %}
+{% endblock %}

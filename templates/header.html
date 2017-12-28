@@ -10,6 +10,11 @@
 				</li>
 			</ul>
 			<div class="cart">
+				{% if user.is_authenticated %}
+				Привет <a href="{% url 'profile' %}">{{user.username}} </a>
+				{% else %}
+				<a href="{% url 'sign_in' %}" class="top-menu">войти</a>
+				{% endif %}
 				<div class="cart__img">
 					<span class="cart__count">{{count}}</span>
 					<span class="cart__summ">{{price}}</span>₽
