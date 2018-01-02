@@ -7,10 +7,10 @@ class UserForm(forms.ModelForm):
 		model = User
 		fields = ('first_name', 'last_name', 'email')
 
-"""class ProfileForm(forms.ModelForm):
+class ProfileForm(forms.ModelForm):
 	class Meta:
 		model = Profile
-		fields = ('bio', 'location', 'birth_date')"""
+		fields = ('photo', 'date_of_birth')
 
 class UserRegistrationForm(forms.ModelForm):
 	password = forms.CharField(label='Пароль', widget=forms.PasswordInput)

@@ -4,10 +4,18 @@ from django.core import serializers
 from collections import Counter
 from django.db import models
 
-from shop.forms import UserForm, UserRegistrationForm
+
+from shop.forms import UserForm,ProfileForm, UserRegistrationForm
 from shop.models import Products
+from shop.utils import files
 
+def home(request):
+	variables = {
+		'Products': Products.objects.all()
+	}
+	return render(request, 'index.html', variables)
 
+""" Вход """
 def sign_in(request):
 	if request.method == 'POST':
 		user_form = UserRegistrationForm(request.POST)
@@ -19,13 +27,22 @@ def sign_in(request):
 	else:
 		user_form = UserRegistrationForm()
 	return render(request, 'account/sign_in.html', {'user_form': user_form})
+
 def logout(request):
 	pass
+
 def profile(request):
-	return render(request, 'account/profile.html', {'test': 'test'})
+	variables = {}
+	variables['files'] = files(request)
+	variables['UserF'] = UserForm()
+	variables['ProfileF'] = ProfileForm()
+	return render(request, 'account/profile.html', variables)
+
 def login(request):
 	pass
-""" Функция вывода объекта корзины c количеством"""
+
+
+""" Корзина """
 def ajax_obj_product(request):
 	if 'cart_items' not in request.session:
 		request.session['cart_items'] = []
@@ -42,12 +59,6 @@ def ajax_obj_product(request):
 	return {
 		'list': obj_array
 	}
-
-def home(request):
-	variables = {
-		'Products': Products.objects.all()
-	}
-	return render(request, 'index.html', variables)
 
 def add_to_cart(request):
 		id = request.GET.get('id', False)

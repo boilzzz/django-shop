@@ -19,12 +19,16 @@ class Products(models.Model):
 		return self.name
 
 class Profile(models.Model):
-	user = models.OneToOneField(User, on_delete=models.CASCADE)
-	date_of_birth = models.DateField(blank=True, null=True)
-	photo = models.ImageField(upload_to='users/%Y/%m/%d', blank=True)
+	user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="Логин")
+	date_of_birth = models.DateField(blank=True, null=True, verbose_name="День рождения")
+	photo = models.ImageField(upload_to='users/%Y/%m/%d', blank=True, verbose_name="Аватар пользователя")
+	base_photo = models.CharField(max_length=255, default="avatar-1.png", verbose_name='Аватар по умолчанию')
 
 	def __str__(self):
-		return 'Profile for user {}'.format(self.user.username)
+		return 'Профиль юзера {}'.format(self.user.username)
+	class Meta:
+		verbose_name = 'Дополнительная информация'
+		verbose_name_plural = 'Дополнительная информация'
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

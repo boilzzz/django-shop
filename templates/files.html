@@ -1,0 +1,6 @@
+{% load staticfiles thumbnail %}
+{% for file in files %}
+<div class="default-avatar-option">
+	<img src="{%static 'img/avatar/' %}{{file}}" alt=""  class="default-avatar-option__img" data-img-name="{{file}}">
+	</div>
+{% endfor %}

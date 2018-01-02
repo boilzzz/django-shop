@@ -17,7 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls.static import static
 
-from . import  settings, views
+from . import  settings, views, utils
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -27,5 +27,6 @@ urlpatterns = [
     url(r'^account/sign_in/$', views.sign_in, name='sign_in'),
     url(r'^account/logout/$', views.logout, name='logout'),
     url(r'^account/profile/$', views.profile, name='profile'),
-    url(r'^account/login/$', views.login, name='login')
+    url(r'^account/login/$', views.login, name='login'),
+    url(r'^files$', utils.files, name='files')
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

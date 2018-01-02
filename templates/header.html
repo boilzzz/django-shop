@@ -5,20 +5,24 @@
 			</div>
 			<ul class="nav">
 				<li class="nav__item">
-					<a href="/" class="nav__item__link">Домой</a>
-					<a href="#" class="nav__item__link">Меню</a>				
+					<a href="/" class="nav__item__link nav__item__link__type_hover">Домой</a>
+					<a href="#" class="nav__item__link nav__item__link__type_hover">Меню</a>				
 				</li>
 			</ul>
 			<div class="cart">
 				{% if user.is_authenticated %}
-				Привет <a href="{% url 'profile' %}">{{user.username}} </a>
+				<div class="join">
+				Привет <a href="{% url 'profile' %}" class="top-menu nav__item__link__type_hover">{{user.username}} </a>
+				</div>
 				{% else %}
-				<a href="{% url 'sign_in' %}" class="top-menu">войти</a>
+				<a href="#" class="top-menu">войти</a>
+				<a href="{% url 'sign_in' %}" class="top-menu nav__item__link__type_hover">регистрация</a>
 				{% endif %}
 				<div class="cart__img">
-					<span class="cart__count">{{count}}</span>
+					<span class="cart__count">{{count}} шт.</span>
+					<a href="/cart" class="nav__item__link__type_hover">Корзина</a>
 					<span class="cart__summ">{{price}}</span>₽
-					<a href="/cart">Корзина</a>
+					
 				</div>
 			</div>
 		</nav>

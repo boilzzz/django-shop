@@ -11,6 +11,35 @@ $.Tween.propHooks.number = {
 		+ (opts.postfix || '');
 	}
 };
+var timer,item_hide = 0;
+function message(obj,text,modif,val) {
+	$this = obj;
+	counter(3);
+	if($this.children().length >= val){
+		var first_p = $this.find($('p')[item_hide]);
+		first_p.slideUp('slow');
+		$this.append($('<p></p>').text(text).addClass('fadeIn animated message_'+modif)).slideDown('slow');
+		item_hide++
+	}else{
+		$this.append($('<p></p>').text(text).addClass('fadeInDown animated  message_'+modif)).slideDown('slow');
+	}
+	function counter(max_time) {
+		var counterVal = 1;
+		if (timer) {
+			clearInterval(timer);
+		}
+		timer = setInterval(function() {
+			if(counterVal > max_time){
+				clearInterval(timer);
+				item_hide = 0
+				$this.slideUp('slow',function() {
+					$this.html(' ').removeClass('message_'+modif);
+				});	
+			}
+			counterVal++
+		}, 1000);
+	}
+}
 $(document).ready(function() {
 	$('.add_to_cart').bind('click', function(e){
 		e.preventDefault();
@@ -66,33 +95,33 @@ $(document).ready(function() {
 			message($('.message'),'Товары не найдены','error',1)
 		}
 	})
+	$("#modal").iziModal({
+		title: "Выбери аватарку или загрузи свою!",
+		subtitle: '<input type="file" value="загрзуить">',
+		icon: 'icon-star',
+		headerColor: '#1E88E5',
+		width: 600,
+		transition: 'fadeInDown',
+		    bodyOverflow:true // Here transitionIn is the same property.
+		});
+	var $avatar_img,$option__img;
+	$(document).on('click', '.trigger-open-modal-avatar-profile', function (event) {
+		event.preventDefault();
+		$('#modal').iziModal('open');
+		$avatar_img = $(this);
+	});
+	$(document).on('opened', '#modal', function (e) {
+		$('.default-avatar-option img').click(function(e) {
+			$option__img = $(this);
+			$avatar_img.addClass('zoomOut animated');
+			$('#modal').iziModal('close');
+			setTimeout(function() {
+				 $avatar_img.removeClass('zoomOut');
+				 $avatar_img.addClass('zoomIn');
+			},500)
+		})
+	});
+	$(document).on('closed', '#modal', function (e) {
+   			$avatar_img.attr('src',$option__img.attr('src'));
+	});	
 })
-var timer,item_hide = 0;
-function message(obj,text,modif,val) {
-	$this = obj;
-	counter(3);
-	if($this.children().length >= val){
-		var first_p = $this.find($('p')[item_hide]);
-		first_p.slideUp('slow');
-		$this.append($('<p></p>').text(text).addClass('fadeIn animated message_'+modif)).slideDown('slow');
-		item_hide++
-	}else{
-		$this.append($('<p></p>').text(text).addClass('fadeInDown animated  message_'+modif)).slideDown('slow');
-	}
-	function counter(max_time) {
-		var counterVal = 1;
-		if (timer) {
-			clearInterval(timer);
-		}
-		timer = setInterval(function() {
-			if(counterVal > max_time){
-				clearInterval(timer);
-				item_hide = 0
-				$this.slideUp('slow',function() {
-					$this.html(' ').removeClass('message_'+modif);
-				});	
-			}
-			counterVal++
-		}, 1000);
-	}
-}

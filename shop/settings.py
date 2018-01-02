@@ -25,6 +25,9 @@ SECRET_KEY = '@@1zas)@qt!$60_trl^vey2p(65=i+$_w34+p-$796z!!-awxs'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+#
+SITE_URL = "localhost"
+
 ALLOWED_HOSTS = ['*']
 
 

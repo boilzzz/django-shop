@@ -1,0 +1,34 @@
+.default-avatar-option{
+	width:20%;
+	float: left;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	padding: 10px;
+	cursor:pointer;
+}
+.default-avatar-option__img{
+	width: 100%;
+}
+.trigger-open-modal-avatar-profile{
+	cursor: pointer;
+	padding-left: 30px;
+}
+#modal{
+	max-height: 600px;
+	display: none;
+}
+.admin-avatar-name{
+	border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px 6px;
+    margin-top: 0;
+    display: inline-block;
+   
+}
+.trigger-open-modal-avatar-profile__admin{
+	 cursor: pointer;
+}
+.field-base_photo label[for=id_base_photo], .field-base_photo label[for=id_profile-0-base_photo]{
+	        height: 226px;
+}

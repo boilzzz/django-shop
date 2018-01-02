@@ -1,16 +1,43 @@
 {% extends "base.html" %}
-{% load staticfiles thumbnail%}
+{% load staticfiles thumbnail staticthumb%}
 {% block title %}
 <title>Удачная регистрация</title>
 {% endblock %}
 {% block content %}
 {% if user.is_authenticated %}
 <div class="user_info">
+	{% if not user.profile.photo %}
+	{% with user.profile.base_photo|static_url:'img/avatar/' as path%}
+	<img src="{{ path }}" width="200" height="200" class="trigger-open-modal-avatar-profile">
+	{% endwith %}
+	{% else %}
+	{% thumbnail user.profile.photo "200x200" as im %}
+	<img src="{{im.url}}" width="{{ im.width }}" height="{{ im.height }}" class="trigger-open-modal-avatar-profile">
+	{% endthumbnail %}
+	{% endif %}
+	{% if not user.profile.photo %}
+	Здравствуй друг!
+	{% else %}
 	Здравствуй {{user.first_name}}
-	Твой логин {{user.username}}
-	Твой email {{user.email}}
+	{% endif %}
+	<form method="post">
+		{% csrf_token %}
+				{% for field in UserF.as_p %}
+		<div class="fieldWrapper">
+			{{ field.errors }}
+			{{ field.label_tag }} 
+			{{ field }}
+			{{ field.value }}
+		</div>
+		{% endfor %}
+		<button type="submit">Сохранить изменения</button>
+	</form>
+	<div id="modal">
+		{% include "files.html" %}
+	</div>
 </div>
 {% else %}
 Привет, ты еще не вошел, войди! Или зарегестрируйся.
 {% endif %}
+
 {% endblock %}
