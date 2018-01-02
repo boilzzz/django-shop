@@ -97,7 +97,6 @@ $(document).ready(function() {
 	})
 	$("#modal").iziModal({
 		title: "Выбери аватарку или загрузи свою!",
-		subtitle: '<input type="file" value="загрзуить">',
 		icon: 'icon-star',
 		headerColor: '#1E88E5',
 		width: 600,

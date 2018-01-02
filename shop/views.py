@@ -36,7 +36,17 @@ def profile(request):
 	variables['files'] = files(request)
 	variables['UserF'] = UserForm()
 	variables['ProfileF'] = ProfileForm()
-	return render(request, 'account/profile.html', variables)
+	if request.method == 'POST':
+		user_form = UserForm(instance=request.user, data=request.POST)
+		if user_form.is_valid():
+			user_form.save()
+			variables['message'] = 'Удачено изменено'
+			print('yes')
+			return render(request, 'account/profile.html', variables)
+		else:
+			print('no')
+	else:
+		return render(request, 'account/profile.html', variables)
 
 def login(request):
 	pass

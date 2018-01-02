@@ -6,6 +6,7 @@
 {% block content %}
 {% if user.is_authenticated %}
 <div class="user_info">
+	<div class="">{{message}}</div>
 	{% if not user.profile.photo %}
 	{% with user.profile.base_photo|static_url:'img/avatar/' as path%}
 	<img src="{{ path }}" width="200" height="200" class="trigger-open-modal-avatar-profile">
@@ -15,26 +16,39 @@
 	<img src="{{im.url}}" width="{{ im.width }}" height="{{ im.height }}" class="trigger-open-modal-avatar-profile">
 	{% endthumbnail %}
 	{% endif %}
-	{% if not user.profile.photo %}
+	{% if not user.first_name %}
 	Здравствуй друг!
 	{% else %}
-	Здравствуй {{user.first_name}}
+	Здравствуй {{user.first_name}}!
 	{% endif %}
 	<form method="post">
 		{% csrf_token %}
-				{% for field in UserF.as_p %}
-		<div class="fieldWrapper">
-			{{ field.errors }}
-			{{ field.label_tag }} 
-			{{ field }}
-			{{ field.value }}
-		</div>
-		{% endfor %}
+		<label>
+			Ваше {{UserF.first_name.label}}:
+			<input type="text" name="first_name" value="{{user.first_name}}" id="id_first_name">	
+		</label>
+		<label>
+			Ваша {{UserF.last_name.label}}:
+			<input type="text" name="last_name" value="{{user.last_name}}" id="id_last_name">
+		</label>
+		<label>	
+			Ваш {{UserF.email.label}}:
+			<input type="email" name="email" value="{{user.email}}" id="id_email">	
+		</label>	
+		<label>	
+			{{ProfileF.photo.label}}:
+			<input type="file" value="загрзуить" name="photo" id="id_photo">
+		</label>
+		<label>	
+			{{ProfileF.date_of_birth.label}}:
+			<input type="text" value="{{user.profile.date_of_birth}}" name="date_of_birth" id="id_date_of_birth">
+			{{ProfileF.date_of_birth.name}}
+		</label>
 		<button type="submit">Сохранить изменения</button>
 	</form>
-	<div id="modal">
-		{% include "files.html" %}
-	</div>
+</div>
+<div id="modal">
+	{% include "files.html" %}
 </div>
 {% else %}
 Привет, ты еще не вошел, войди! Или зарегестрируйся.
