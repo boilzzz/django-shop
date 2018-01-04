@@ -11,9 +11,8 @@ def cart(request):
 	price = 0;
 	for item in request.session['cart_items']:
 		price += int(Products.objects.filter(pk=item).first().price)
-	user = request.user
 	return {
         'price':price,
         'count':len(request.session['cart_items']),
-        'user':user
+        'request':request
     	}

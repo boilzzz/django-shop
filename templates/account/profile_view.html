@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load staticfiles thumbnail staticthumb%}
+{% block title %}
+<title>Профиль {{view_user.0.username}}</title>
+{% endblock %}
+{% block content %}
+<div class="user_info">
+	Здравствуй друг ты посетил страницу {{view_user.0.username}}
+</div>
+{% endblock %}

@@ -110,8 +110,9 @@ $(document).ready(function() {
 		$avatar_img = $(this);
 	});
 	$(document).on('opened', '#modal', function (e) {
-		$('.default-avatar-option img').click(function(e) {
-			$option__img = $(this);
+		$('.default-avatar-option').click(function(e) {
+			$option__img = $(this).find($('.default-avatar-option__img'));
+
 			$avatar_img.addClass('zoomOut animated');
 			$('#modal').iziModal('close');
 			setTimeout(function() {
@@ -122,5 +123,14 @@ $(document).ready(function() {
 	});
 	$(document).on('closed', '#modal', function (e) {
    			$avatar_img.attr('src',$option__img.attr('src'));
+   			$('#id_base_photo').val($option__img.attr('data-img-name'));
+   			$('#id_base_photo').attr('value',$option__img.attr('data-img-name'));
 	});	
+	$('.change-profile-user').bind('click', function(e) {
+		$('.avatar-profile img').addClass('trigger-open-modal-avatar-profile');
+		$('form').fadeIn('slow');
+		$('.user-info_text').fadeOut('fast');
+		
+	})
+	
 })

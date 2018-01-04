@@ -1,14 +1,27 @@
-from django.shortcuts import render
+from django.contrib.messages.api import error, success
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.core import serializers
 from collections import Counter
+from django.contrib import auth
 from django.db import models
+from django.contrib.auth.models import User
 
-
-from shop.forms import UserForm,ProfileForm, UserRegistrationForm
-from shop.models import Products
+from shop.forms import UserForm, ProfileForm, UserRegistrationForm, UserLoginForm
+from shop.models import Products,Profile
 from shop.utils import files
 
+
+def login_required(func):
+	def _fn(req):
+		if not req.user.is_authenticated:
+			error(req, 'Для доступа к этой странице необходимо авторизоваться')
+			return redirect('login')
+		else:
+			return func(req)
+
+	return _fn
+	
 def home(request):
 	variables = {
 		'Products': Products.objects.all()
@@ -28,29 +41,61 @@ def sign_in(request):
 		user_form = UserRegistrationForm()
 	return render(request, 'account/sign_in.html', {'user_form': user_form})
 
-def logout(request):
-	pass
+@login_required
+def logout_view(request):
+	auth.logout(request)
+	return redirect('home')
 
+def login(request):
+	form = UserLoginForm(request.POST or None)
+	context = { 'form': form, }
+	if request.method == 'POST' and form.is_valid():
+		print('yes') 
+		username = form.cleaned_data.get('username', None)
+		password = form.cleaned_data.get('password', None)
+		user = auth.authenticate(username=username, password=password)
+		if user is not None:
+			print('Correct user')
+		else:
+			print('Wrong user')
+			context['error'] = 'Логин или пароль неверный'
+			return render(request, 'account/login.html', context)
+		if user and user.is_active:
+			auth.login(request, user)
+			return redirect('home')
+	return render(request, 'account/login.html', context)
+
+@login_required
 def profile(request):
 	variables = {}
 	variables['files'] = files(request)
-	variables['UserF'] = UserForm()
-	variables['ProfileF'] = ProfileForm()
+	variables['UserF'] = UserForm(instance=request.user)
+	variables['ProfileF'] = ProfileForm(instance=request.user.profile)
 	if request.method == 'POST':
 		user_form = UserForm(instance=request.user, data=request.POST)
-		if user_form.is_valid():
+		profile_form = ProfileForm(instance=request.user.profile, data=request.POST, files=request.FILES)
+		if user_form.is_valid() and profile_form.is_valid():
 			user_form.save()
-			variables['message'] = 'Удачено изменено'
-			print('yes')
+			profile_form.save()
+			variables['message'] = 'Удачно изменено'
+			variables['files'] = files(request)
+			variables['UserF'] = UserForm(instance=request.user)
+			variables['ProfileF'] = ProfileForm(instance=request.user.profile)
 			return render(request, 'account/profile.html', variables)
 		else:
-			print('no')
+			variables['message'] = 'Ошибка'
+			return render(request, 'account/profile.html', variables)
 	else:
+		variables['files'] = files(request)
+		variables['UserF'] = UserForm(instance=request.user)
+		variables['ProfileF'] = ProfileForm(instance=request.user.profile)
 		return render(request, 'account/profile.html', variables)
 
-def login(request):
-	pass
-
+def profile_view(request,userlogin=''):
+	variables = {
+		'view_user':User.objects.filter(username=userlogin)
+	}
+	return render(request, 'account/profile_view.html', variables)
 
 """ Корзина """
 def ajax_obj_product(request):
@@ -73,7 +118,7 @@ def ajax_obj_product(request):
 def add_to_cart(request):
 		id = request.GET.get('id', False)
 		product = Products.objects.filter(pk=id)
-		if id and product.exists():	
+		if id and product.exists(): 
 			request.session['cart_items'].append(id)
 			request.session.modified = True
 			product__price_json = serializers.serialize("json",product)
@@ -85,7 +130,7 @@ def view_cart(request):
 	variables = ajax_obj_product(request)
 	if request.is_ajax():
 		clear_cart = request.GET.get('clear_cart', False)
-		if clear_cart:	
+		if clear_cart:  
 			del request.session['cart_items']
 			return render(request, 'cart.html', ajax_obj_product(request))
 	return render(request, 'cart.html', variables)

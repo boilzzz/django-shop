@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
+from django.forms.widgets import DateInput
 class Products(models.Model):
 	name = models.CharField(max_length=255, default="", verbose_name='Название товара')
 	desk = models.TextField(default="", verbose_name="Описание товара")

@@ -10,7 +10,7 @@ class UserForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
 	class Meta:
 		model = Profile
-		fields = ('photo', 'date_of_birth')
+		fields = ('photo', 'date_of_birth','base_photo')
 
 class UserRegistrationForm(forms.ModelForm):
 	password = forms.CharField(label='Пароль', widget=forms.PasswordInput)
@@ -25,3 +25,7 @@ class UserRegistrationForm(forms.ModelForm):
 		if cd['password'] != cd['password2']:
 			raise forms.ValidationError('Passwords don\'t match.')
 		return cd['password2']
+
+class UserLoginForm(forms.Form):
+    username = forms.CharField(label='Логин', max_length=30)
+    password = forms.CharField(label='Пароль', widget=forms.PasswordInput)

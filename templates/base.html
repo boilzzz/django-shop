@@ -1,35 +1,56 @@
 {% load cart %}
 <html>
 <head>
- {% load staticfiles %}
- <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
- <meta charset="UTF-8">
- <link rel="shortcut icon" href="{% static 'img/fav.png' %}" type="image/png">
- {% block share %}
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- {% endblock %}
- {% block static %}
- <link rel="stylesheet" href="{% static 'css/normal.css' %}">
- <link rel="stylesheet" href="{% static 'css/animate.css' %}">
- <link rel="stylesheet" href="{% static 'css/style.css' %}">
- <link rel="stylesheet" href="{% static 'css/iziModal.css' %}">
+	{% load staticfiles %}
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta charset="UTF-8">
+	<link rel="shortcut icon" href="{% static 'img/fav.png' %}" type="image/png">
+	{% block share %}
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{% endblock %}
+	{% block static %}
+	<link rel="stylesheet" href="{% static 'css/normal.css' %}">
+	<link rel="stylesheet" href="{% static 'css/animate.css' %}">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'css/iziModal.css' %}">
 
- {% endblock %}
- {% block include_css %} 
- {% endblock %}
- {% block include_js%} 
- {% endblock %}
- {% block title %} 
- {% endblock %}
+	{% endblock %}
+	{% block include_css %} 
+	{% endblock %}
+	{% block include_js%} 
+	{% endblock %}
+	{% block title %} 
+	{% endblock %}
 
 </head>
 <body>
-	<div class="message hide"></div>
-	{% cart request %}
-	<div class="middle-container">
-	    {% block content %}
-	    {% endblock %}
+	<div class="message">	</div>	
+		{% if messages %}
+		{% for message in messages %}
+		<div class="message">
+		<p
+		{% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+		class="message_success fadeInDown animated"
+		{% elif message.level == DEFAULT_MESSAGE_LEVELS.DEBUG %}
+		class="hide"
+		{% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+		class="message_error fadeInDown animated"
+		{% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+		class="message_success fadeInDown animated"
+		{% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+		class="alert-warning fadeInDown animated"
+		{% endif %}
+		>
+		{{ message|safe }}
+	</p>
 	</div>
+	{% endfor %}
+	{% endif %}
+{% cart request %}
+<div class="middle-container fadeIn animated">
+	{% block content %}
+	{% endblock %}
+</div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="{% static 'js/iziModal.min.js' %}"></script>

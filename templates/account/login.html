@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+
+{% block title %}
+<title>
+{% trans 'Войти' %}
+</title>
+{% endblock %}
+
+{% block content %}
+  {% if user.is_anonymous %}
+  <div class="error">{{error}}</div>
+    <form method="post">
+      {% csrf_token %}
+      <table>
+        {{ form.as_p }}
+        <tr>
+          <td colspan="2">
+            <input type="submit" name="login" value="{% trans 'Войти' %}"/>
+          </td>
+        </tr>
+      </table>
+    </form>
+  {% endif %}
+{% endblock %}

@@ -1,48 +1,77 @@
 {% extends "base.html" %}
 {% load staticfiles thumbnail staticthumb%}
 {% block title %}
-<title>Удачная регистрация</title>
+<title>Профиль {{user}}</title>
 {% endblock %}
 {% block content %}
 {% if user.is_authenticated %}
-<div class="user_info">
+<div class="user-info clear">
 	<div class="">{{message}}</div>
-	{% if not user.profile.photo %}
-	{% with user.profile.base_photo|static_url:'img/avatar/' as path%}
-	<img src="{{ path }}" width="200" height="200" class="trigger-open-modal-avatar-profile">
-	{% endwith %}
-	{% else %}
-	{% thumbnail user.profile.photo "200x200" as im %}
-	<img src="{{im.url}}" width="{{ im.width }}" height="{{ im.height }}" class="trigger-open-modal-avatar-profile">
-	{% endthumbnail %}
-	{% endif %}
-	{% if not user.first_name %}
-	Здравствуй друг!
-	{% else %}
-	Здравствуй {{user.first_name}}!
-	{% endif %}
-	<form method="post">
+	<div class="avatar-profile">
+		{% if not user.profile.photo %}
+		{% with user.profile.base_photo|static_url:'img/avatar/' as path%}
+		<img src="{{ path }}" width="200" height="200" >
+		{% endwith %}
+		{% else %}
+		{% thumbnail user.profile.photo "200x200"  crop="center" as im %}
+		<img src="{{im.url}}" width="{{ im.width }}" height="{{ im.height }}" >
+		{% endthumbnail %}
+		{% endif %}
+	</div>
+	<div class="user-info_text">
+	<div>
+		{% if not user.first_name %}
+		Здравствуй друг!
+		{% else %}
+		Здравствуй {{user.first_name}} {{user.last_name}}!
+		{% endif %}
+	</div>
+	<div>
+		Твой email: {{user.email}}
+	</div>
+	<div>
+		Дата рождения: {{user.profile.date_of_birth}}
+	</div>
+	<div>
+		<a href="#" class="btn change-profile-user">изменить?</a>
+	</div>
+	</div>
+	<form method="post" enctype="multipart/form-data" class="profile-form hide">
+		{{ UserF.non_field_errors }}
+		{{ ProfileF.non_field_errors }}
 		{% csrf_token %}
 		<label>
+			{{ UserF.first_name.errors }}
 			Ваше {{UserF.first_name.label}}:
 			<input type="text" name="first_name" value="{{user.first_name}}" id="id_first_name">	
 		</label>
 		<label>
+			{{ UserF.last_name.errors }}
 			Ваша {{UserF.last_name.label}}:
 			<input type="text" name="last_name" value="{{user.last_name}}" id="id_last_name">
 		</label>
 		<label>	
+			{{ UserF.email.errors }}
 			Ваш {{UserF.email.label}}:
 			<input type="email" name="email" value="{{user.email}}" id="id_email">	
 		</label>	
 		<label>	
+			{{ ProfileF.photo.errors }}
 			{{ProfileF.photo.label}}:
-			<input type="file" value="загрзуить" name="photo" id="id_photo">
+			<input type="file" name="photo" id="id_photo">
+			<label>
+			<div>Удалить загруженую автарку, и поставить стандартную? </div>
+			Ок <input type="checkbox" name="photo-clear" id="id_photo-clear">
+			</label>
 		</label>
 		<label>	
+			{{ ProfileF.date_of_birth.errors }}
 			{{ProfileF.date_of_birth.label}}:
-			<input type="text" value="{{user.profile.date_of_birth}}" name="date_of_birth" id="id_date_of_birth">
-			{{ProfileF.date_of_birth.name}}
+			<input type="date" value="{{ProfileF.date_of_birth.value|date:'Y-m-d'}}" name="date_of_birth" id="id_date_of_birth">
+		</label>
+		<label>
+			<input type="text" value="{{ProfileF.base_photo.value}}" name="base_photo" id="id_base_photo" class="hide">
+			
 		</label>
 		<button type="submit">Сохранить изменения</button>
 	</form>

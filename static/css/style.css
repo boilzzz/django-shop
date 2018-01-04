@@ -66,7 +66,7 @@ a{
 }
 .product, .cart-clear{
 	text-align: center;
-	margin-top: 20px;
+	padding-top: 20px;
 }
 .product_item{
 	display: inline-block;
@@ -151,6 +151,12 @@ a{
 #modal{
 	max-height: 600px;
 	display: none;
+}
+.profile-form label{
+	display: block;
+}
+.avatar-profile, .user-info_text{
+	float: left;
 }
 @media (max-width: 360px) {
 	.product__description{

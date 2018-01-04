@@ -5,18 +5,21 @@
 			</div>
 			<ul class="nav">
 				<li class="nav__item">
-					<a href="/" class="nav__item__link nav__item__link__type_hover">Домой</a>
+					<a href="{% if request.path != '/' %}/{%else%}#{%endif%}" class="nav__item__link nav__item__link__type_hover">Домой</a>
 					<a href="#" class="nav__item__link nav__item__link__type_hover">Меню</a>				
 				</li>
 			</ul>
 			<div class="cart">
-				{% if user.is_authenticated %}
+				{% if request.user.is_authenticated %}
 				<div class="join">
-				Привет <a href="{% url 'profile' %}" class="top-menu nav__item__link__type_hover">{{user.username}} </a>
+				Привет <a href="{% url 'profile' %}" class="top-menu nav__item__link__type_hover">{{request.user.username}} </a>
+				<a href="{% url 'logout_view' %}" class="top-menu nav__item__link__type_hover">Выйти</a>
 				</div>
 				{% else %}
-				<a href="#" class="top-menu">войти</a>
+				<div class="join">
+				<a href="{% url 'login' %}" class="top-menu nav__item__link__type_hover">войти</a>
 				<a href="{% url 'sign_in' %}" class="top-menu nav__item__link__type_hover">регистрация</a>
+			</div>
 				{% endif %}
 				<div class="cart__img">
 					<span class="cart__count">{{count}} шт.</span>
