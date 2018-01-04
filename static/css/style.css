@@ -155,7 +155,11 @@ a{
 .profile-form label{
 	display: block;
 }
-.avatar-profile, .user-info_text{
+.avatar-profile {
+	float: left;
+	text-align: center;
+}
+.user-info__text{
 	float: left;
 }
 @media (max-width: 360px) {

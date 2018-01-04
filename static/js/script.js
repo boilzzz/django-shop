@@ -127,10 +127,9 @@ $(document).ready(function() {
    			$('#id_base_photo').attr('value',$option__img.attr('data-img-name'));
 	});	
 	$('.change-profile-user').bind('click', function(e) {
-		$('.avatar-profile img').addClass('trigger-open-modal-avatar-profile');
-		$('form').fadeIn('slow');
-		$('.user-info_text').fadeOut('fast');
-		
+		$('.avatar-profile').addClass('trigger-open-modal-avatar-profile');
+		$('form, .avatar-profile__change').fadeIn('slow');
+		$('.user-info__text').fadeOut('fast');	
 	})
 	
 })
